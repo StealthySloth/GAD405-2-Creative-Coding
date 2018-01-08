@@ -19,12 +19,12 @@ const mainState = {
     this.birdJustCrossedPipes = false;
   },
 
-  colourShiftR: function () {
+  /*colourShiftR: function () {
     this.bird = game.add.sprite(x, y, 'redBird');
   },
 
 let redShift;
-
+*/
   create: function () {
     game.stage.backgroundColor = '#87CEEB';
     game.stage.disableVisibilityChange = true;
@@ -38,8 +38,8 @@ let redShift;
     this.bird.body.gravity.y = 1000;
     //this.bird.body.collideWorldBounds = true;
 
-    redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    redShift.onDown.this.bird = 'redbird';
+    //redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    //redShift.onDown.this.bird = 'redbird';
 
     this.flapSound = game.add.audio('flap');
 
@@ -52,14 +52,25 @@ let redShift;
     //game.physics.arcade.enable(this.ground);
 
     this.score = 0;
-    this.scoreText = game.add.text(170, 20, '0', { font: '40px Arial', fill: '#ffffff' });
+    this.scoreText = game.add.text(100, 20, '0', { font: '40px Arial', fill: '#ffffff' });
+
+    this.highScore = game.add.text(240, 20, '0', {font: '40px Arial', fill: '#ffffff'});
+    this.highScore = localStorage.getItem('HighScore');
+    if (this.highScore === null) {
+      localStorage.setItem('HighScore', 0);
+      this.highScore = 0;
+    }
 
     game.input.onDown.add(this.flap, this);
     game.time.events.loop(2000, this.addPipe, this);
   },
 
   die: function () {
-    game.state.start('main');
+    game.state.start('finalscore');
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      localStorage.setItem('HighScore', this.highScore);
+    }
   },
 
   flap: function () {
@@ -103,6 +114,22 @@ let redShift;
   }
 };
 
+const finalscoreState = {
+  preload: function () {
+    game.load.image('finalscore', 'assets/finalscoreState.png');
+  },
+  create: function () {
+    const finalscoreImg = game.cache.getImage('finalscore');
+    game.add.sprite(
+      0,
+      0,
+      'finalscore');
+    game.input.onDown.add(() => { game.state.start('main'); });
+  }
+
+};
+
 const game = new Phaser.Game(350, 490);
 game.state.add('main', mainState);
+game.state.add('finalscore', finalscoreState);
 game.state.start('main');
