@@ -2,14 +2,14 @@ const mainState = {
   addPipe: function () {
     const pipeHolePosition = game.rnd.between(50, 430 - this.pipeHole);
 
-    const upperPipe = this.pipes.create(320, pipeHolePosition - 480, 'pipe');
+    const upperPipe = this.pipes.create(320, pipeHolePosition - 460,('purplePipe'));
     game.physics.arcade.enable(upperPipe);
     upperPipe.body.velocity.x = -this.birdSpeed;
     upperPipe.events.onOutOfBounds.add((pipe) => {
       pipe.destroy();
     });
 
-    const lowerPipe = this.pipes.create(320, pipeHolePosition + this.pipeHole, 'pipe');
+    const lowerPipe = this.pipes.create(320, pipeHolePosition + this.pipeHole, 'purplePipe');
     game.physics.arcade.enable(lowerPipe);
     lowerPipe.body.velocity.x = -this.birdSpeed;
     lowerPipe.events.onOutOfBounds.add((pipe) => {
@@ -19,18 +19,27 @@ const mainState = {
     this.birdJustCrossedPipes = false;
   },
 
+  colourShiftR: function () {
+    this.bird = game.add.sprite(x, y, 'redBird');
+  },
+
+let redShift;
+
   create: function () {
     game.stage.backgroundColor = '#87CEEB';
-    // read about the next line at https://photonstorm.github.io/phaser-ce/Phaser.Stage.html#disableVisibilityChange
     game.stage.disableVisibilityChange = true;
 
     this.bird = game.add.sprite(80, 240, 'bird');
     this.bird.anchor.set(0.5);
-    this.birdSpeed = 125;
+    this.birdSpeed = 130;
     this.birdFlapPower = 300;
     this.birdJustCrossedPipes = false;
     game.physics.arcade.enable(this.bird);
-    this.bird.body.gravity.y = 800;
+    this.bird.body.gravity.y = 1000;
+    //this.bird.body.collideWorldBounds = true;
+
+    redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    redShift.onDown.this.bird = 'redbird';
 
     this.flapSound = game.add.audio('flap');
 
@@ -38,8 +47,12 @@ const mainState = {
     this.pipeHole = 120;
     this.addPipe();
 
+    //this.ground = game.add.sprite(0, game.height * 0.9, "ground");
+    //this.ground.body.immovable = true;
+    //game.physics.arcade.enable(this.ground);
+
     this.score = 0;
-    this.scoreText = game.add.text(175, 20, '0', { font: '30px Arial', fill: '#ffffff' });
+    this.scoreText = game.add.text(170, 20, '0', { font: '40px Arial', fill: '#ffffff' });
 
     game.input.onDown.add(this.flap, this);
     game.time.events.loop(2000, this.addPipe, this);
@@ -58,9 +71,17 @@ const mainState = {
     game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
-    game.load.image('bird', 'assets/bird.png');
-    game.load.image('pipe', 'assets/pipe.png');
     game.load.audio('flap', 'assets/jump.mp3');
+    game.load.image('ground', 'assets/ground.png');
+    game.load.image('greenPipe', 'assets/greenPipe.png');
+    game.load.image('redPipe', 'assets/redPipe.png');
+    game.load.image('yellowPipe', 'assets/yellowPipe.png');
+    game.load.image('purplePipe', 'assets/purplePipe.png');
+    game.load.image('bird', 'assets/bird.png');
+    game.load.image('greenBird', 'assets/greenBird.png');
+    game.load.image('redBird', 'assets/redBird.png');
+    game.load.image('purpleBird', 'assets/purpleBird.png');
+
   },
 
   update: function () {
