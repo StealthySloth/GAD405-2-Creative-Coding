@@ -23,7 +23,10 @@ const mainState = {
     this.bird = game.add.sprite(x, y, 'redBird');
   },
 
-let redShift;
+var redShift;
+var yellowShift;
+var greenShift;
+var purpleShift;
 */
   create: function () {
     game.stage.backgroundColor = '#87CEEB';
