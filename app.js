@@ -26,29 +26,31 @@ const mainState = {
 var redShift;
 var yellowShift;
 var greenShift;
-var purpleShift;
-*/
+var purpleShift;*/
+
   create: function () {
     game.stage.backgroundColor = '#87CEEB';
     game.stage.disableVisibilityChange = true;
 
-    this.bird = game.add.sprite(80, 240, 'bird');
+    this.bird = game.add.sprite(80, 40, 'bird');
     this.bird.anchor.set(0.5);
-    this.birdSpeed = 130;
-    this.birdFlapPower = 300;
+    this.birdSpeed = 180;
+    this.birdFlapPower = 450;
     this.birdJustCrossedPipes = false;
     game.physics.arcade.enable(this.bird);
-    this.bird.body.gravity.y = 1000;
+    this.bird.body.gravity.y = 900;
     //this.bird.body.collideWorldBounds = true;
 
-    //redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    //redShift.onDown.this.bird = 'redbird';
+    /*redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    redShift.onDown.this.bird = 'redBird';*/
 
     this.flapSound = game.add.audio('flap');
 
     this.pipes = game.add.group();
     this.pipeHole = 120;
     this.addPipe();
+
+    game.physics.enable(Phaser.Physics.ARCADE);
 
     //this.ground = game.add.sprite(0, game.height * 0.9, "ground");
     //this.ground.body.immovable = true;
@@ -79,6 +81,7 @@ var purpleShift;
   flap: function () {
     this.flapSound.play();
     this.bird.body.velocity.y = -this.birdFlapPower;
+
   },
 
   preload: function () {
@@ -95,11 +98,12 @@ var purpleShift;
     game.load.image('greenBird', 'assets/greenBird.png');
     game.load.image('redBird', 'assets/redBird.png');
     game.load.image('purpleBird', 'assets/purpleBird.png');
+    game.load.image('startingPoint', 'assets/startingPoint.png');
 
   },
 
   update: function () {
-    game.physics.arcade.overlap(this.bird, this.pipes, this.die, null, this);
+    //game.physics.arcade.overlap(this.bird, this.pipes, this.die, null, this);
     if (this.bird.y > game.height) {
       this.die();
     }
@@ -109,12 +113,14 @@ var purpleShift;
         this.updateScore();
       }
     });
+    game.physics.arcade.collide(this.bird, this.pipes);
   },
 
   updateScore: function () {
     this.score = this.score + 1;
     this.scoreText.text = `${this.score}`;
   }
+
 };
 
 const finalscoreState = {
@@ -128,6 +134,7 @@ const finalscoreState = {
       0,
       'finalscore');
     game.input.onDown.add(() => { game.state.start('main'); });
+    game.add.text(47, 260, 'Click to Try Again!', {font: '35px Impact', fill: '#ffffff' });
   }
 
 };
