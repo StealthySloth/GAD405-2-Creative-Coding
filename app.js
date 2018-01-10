@@ -29,8 +29,12 @@ var greenShift;
 var purpleShift;*/
 
   create: function () {
-    game.stage.backgroundColor = '#87CEEB';
+    game.add.image(0, 0, 'lab');
     game.stage.disableVisibilityChange = true;
+    music = game.add.audio('music');
+    music.play('', 0, 1, true);
+
+
 
     this.bird = game.add.sprite(80, 40, 'bird');
     this.bird.anchor.set(0.5);
@@ -39,12 +43,18 @@ var purpleShift;*/
     this.birdJustCrossedPipes = false;
     game.physics.arcade.enable(this.bird);
     this.bird.body.gravity.y = 950;
+    this.MAX_SPEED = 500;
+    this.ACCELARATION = 1500
+    this.DRAG = 600;
+    this.JUMP_SPEED = -700;
+    this.bird.body.drag.setTo(this.DRAG, 0);
+
     //this.bird.body.collideWorldBounds = true;
 
     /* (Rejected Code) redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
     redShift.onDown.this.bird = 'redBird';*/
 
-    this.flapSound = game.add.audio('flap');
+    this.flapSound = game.add.audio('jump');
 
     this.pipes = game.add.group();
     this.pipeHole = 120;
@@ -52,9 +62,9 @@ var purpleShift;*/
 
     game.physics.enable(Phaser.Physics.ARCADE);
 
-    //this.ground = game.add.sprite(0, game.height * 0.9, "ground");
-    //this.ground.body.immovable = true;
-    //game.physics.arcade.enable(this.ground);
+    /* (Rejected Code) this.ground = game.add.sprite(0, game.height * 0.9, "ground");
+    this.ground.body.immovable = true;
+    game.physics.arcade.enable(this.ground);*/
 
     this.score = 0;
     this.scoreText = game.add.text(100, 20, '0', { font: '40px Impact', fill: '#ffffff' });
@@ -72,11 +82,11 @@ var purpleShift;*/
 
   die: function () {
     game.state.start('finalscore');
-    console.log(this.score, this.highScore);
     if (this.score > this.highScore) {
       this.highScore = this.score;
       localStorage.setItem('HighScore', this.highScore);
     }
+    music.stop();
   },
 
   flap: function () {
@@ -89,18 +99,11 @@ var purpleShift;*/
     game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
-    game.load.audio('flap', 'assets/jump.mp3');
-    game.load.image('ground', 'assets/ground.png');
-    game.load.image('greenPipe', 'assets/greenPipe.png');
-    game.load.image('redPipe', 'assets/redPipe.png');
-    game.load.image('yellowPipe', 'assets/yellowPipe.png');
+    game.load.audio('jump', 'assets/jump.wav');
     game.load.image('purplePipe', 'assets/purplePipe.png');
     game.load.image('bird', 'assets/bird.png');
-    game.load.image('greenBird', 'assets/greenBird.png');
-    game.load.image('redBird', 'assets/redBird.png');
-    game.load.image('purpleBird', 'assets/purpleBird.png');
-    game.load.image('startingPoint', 'assets/startingPoint.png');
-    //game.load.image('lab', 'assets/lab.png');
+    game.load.image('lab', 'assets/lab.png');
+    game.load.audio('music', 'assets/music.wav');
   },
 
   update: function () {
@@ -115,6 +118,27 @@ var purpleShift;*/
       }
     });
     game.physics.arcade.collide(this.bird, this.pipes);
+
+
+
+    var touchPipe = this.bird.body.touching.pipes;
+
+    /*if (touchPipe) {
+      this.flap = 2;
+      this.birdFlapPower = false;
+    }
+    if (this.flap.input = 2) {
+      this.flap--;
+      this.birdFlapPower = true;
+    }
+  /*  if(this.flap > 0 && this.input.onDown(150)) {
+      this.bird.body.velocity.y = this.JUMP_SPEED;
+      this.birdFlapPower = true;
+    }*/
+    /*if (this.birdFlapPower && this.input.onDown) {
+      this.flap--;
+      this.birdFlapPower = false;
+    }*/
   },
 
   updateScore: function () {
@@ -127,6 +151,7 @@ var purpleShift;*/
 const finalscoreState = {
   preload: function () {
     game.load.image('finalscore', 'assets/finalscoreState.png');
+    game.load.audio('gameOver', 'assets/gameOver.wav');
   },
   create: function () {
     const finalscoreImg = game.cache.getImage('finalscore');
@@ -134,6 +159,8 @@ const finalscoreState = {
       0,
       0,
       'finalscore');
+      music = game.add.audio('gameOver');
+      music.play();
     game.input.onDown.add(() => { game.state.start('main'); });
     game.add.text(47, 260, 'Click to Try Again!', {font: '35px Impact', fill: '#ffffff' });
   }
