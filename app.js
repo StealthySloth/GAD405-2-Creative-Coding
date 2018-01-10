@@ -34,14 +34,14 @@ var purpleShift;*/
 
     this.bird = game.add.sprite(80, 40, 'bird');
     this.bird.anchor.set(0.5);
-    this.birdSpeed = 180;
+    this.birdSpeed = 200;
     this.birdFlapPower = 450;
     this.birdJustCrossedPipes = false;
     game.physics.arcade.enable(this.bird);
-    this.bird.body.gravity.y = 900;
+    this.bird.body.gravity.y = 950;
     //this.bird.body.collideWorldBounds = true;
 
-    /*redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    /* (Rejected Code) redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
     redShift.onDown.this.bird = 'redBird';*/
 
     this.flapSound = game.add.audio('flap');
@@ -57,14 +57,14 @@ var purpleShift;*/
     //game.physics.arcade.enable(this.ground);
 
     this.score = 0;
-    this.scoreText = game.add.text(100, 20, '0', { font: '40px Arial', fill: '#ffffff' });
+    this.scoreText = game.add.text(100, 20, '0', { font: '40px Impact', fill: '#ffffff' });
 
-    this.highScore = game.add.text(240, 20, '0', {font: '40px Arial', fill: '#ffffff'});
     this.highScore = localStorage.getItem('HighScore');
-    if (this.highScore === null) {
+    if (this.highScore == null) {
       localStorage.setItem('HighScore', 0);
       this.highScore = 0;
     }
+    this.highScoreText = game.add.text(240, 20, this.highScore, {font: '40px Impact', fill: '#ffffff'});
 
     game.input.onDown.add(this.flap, this);
     game.time.events.loop(2000, this.addPipe, this);
@@ -72,6 +72,7 @@ var purpleShift;*/
 
   die: function () {
     game.state.start('finalscore');
+    console.log(this.score, this.highScore);
     if (this.score > this.highScore) {
       this.highScore = this.score;
       localStorage.setItem('HighScore', this.highScore);
@@ -99,7 +100,7 @@ var purpleShift;*/
     game.load.image('redBird', 'assets/redBird.png');
     game.load.image('purpleBird', 'assets/purpleBird.png');
     game.load.image('startingPoint', 'assets/startingPoint.png');
-
+    //game.load.image('lab', 'assets/lab.png');
   },
 
   update: function () {
