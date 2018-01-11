@@ -49,6 +49,8 @@ var purpleShift;*/
     this.JUMP_SPEED = -700;
     this.bird.body.drag.setTo(this.DRAG, 0);
 
+    //this.flapCount = 2;
+
     //this.bird.body.collideWorldBounds = true;
 
     /* (Rejected Code) redShift = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -75,9 +77,9 @@ var purpleShift;*/
       this.highScore = 0;
     }
     this.highScoreText = game.add.text(240, 20, this.highScore, {font: '40px Impact', fill: '#ffffff'});
-
     game.input.onDown.add(this.flap, this);
     game.time.events.loop(2000, this.addPipe, this);
+
   },
 
   die: function () {
@@ -92,14 +94,10 @@ var purpleShift;*/
   flap: function () {
     this.flapSound.play();
     this.bird.body.velocity.y = -this.birdFlapPower;
-    this.flap = 2;
-    if (this.flap > 0) {
-
-      this.flap = this.flap - 1
-    }
-    if (this.flap = 0) {
-      this.flap = null
-    }
+  /*  if (this.flapCount > 0) {
+       console.log("flap");
+       this.flapCount = this.flapCount - 1
+    }*/
   },
 
   preload: function () {
@@ -126,12 +124,15 @@ var purpleShift;*/
     });
     game.physics.arcade.collide(this.bird, this.pipes);
 
-    var touchPipe = this.bird.body.touching.pipes;
+    //var touchPipe = this.bird.body.touching.pipes;
 
+    /* (Rejected Code)
     if (touchPipe) {
-      this.flap = 2;
+      console.log("flap count reset");
+      this.flapCount = 2;
     }
-    /*if (this.flap.input === 2) {
+    /* (Rejected Code)
+    if (this.flap.input === 2) {
       this.flap--;
     }
     if(this.flap > 0 && this.input.onDown(150)) {
