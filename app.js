@@ -39,7 +39,7 @@ var purpleShift;*/
     this.bird = game.add.sprite(80, 40, 'bird');
     this.bird.anchor.set(0.5);
     this.birdSpeed = 200;
-    this.birdFlapPower = 450;
+    this.birdFlapPower = 470;
     this.birdJustCrossedPipes = false;
     game.physics.arcade.enable(this.bird);
     this.bird.body.gravity.y = 950;
@@ -121,9 +121,9 @@ var purpleShift;*/
 
 
 
-    var touchPipe = this.bird.body.touching.pipes;
+    /*var touchPipe = this.bird.body.touching.pipes;
 
-    /*if (touchPipe) {
+    if (touchPipe) {
       this.flap = 2;
       this.birdFlapPower = false;
     }
@@ -131,11 +131,11 @@ var purpleShift;*/
       this.flap--;
       this.birdFlapPower = true;
     }
-  /*  if(this.flap > 0 && this.input.onDown(150)) {
+    if(this.flap > 0 && this.input.onDown(150)) {
       this.bird.body.velocity.y = this.JUMP_SPEED;
       this.birdFlapPower = true;
-    }*/
-    /*if (this.birdFlapPower && this.input.onDown) {
+    }
+    if (this.birdFlapPower && this.input.onDown) {
       this.flap--;
       this.birdFlapPower = false;
     }*/

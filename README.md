@@ -10,7 +10,5 @@ Create temp obstacles X
 Create a final score / game over screen X
 Limit jumps to 2 per pipe contact or a chargeable jump
 Fix highscore function X
-Create final assets
-Add final assets
-
-Stop moving pipes upon collision
+Create final assets X
+Add final assets X
